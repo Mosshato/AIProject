@@ -19,8 +19,8 @@ public class PDFExportController {
      * și trimite fișierul rezultat.
      */
     @GetMapping(value = "/pdf/generate", produces = "application/pdf")
-    public void generatePDF(HttpServletResponse response) {
+    public void generatePDF(HttpServletResponse response) throws Exception {
         // Tot header-ul, conversia și stream-ul sunt gestionate în service
-        pdfService.exportFace(response);
+        pdfService.exportCardsAsPdf(response);
     }
 }
