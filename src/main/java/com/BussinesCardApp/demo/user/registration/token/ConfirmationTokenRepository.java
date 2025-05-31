@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.registration.token;
+package com.BussinesCardApp.demo.user.registration.token;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.security;
+package com.BussinesCardApp.demo.user.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.appuser;
+package com.BussinesCardApp.demo.user.appuser;
 
 public enum AppUserRole {
     USER,

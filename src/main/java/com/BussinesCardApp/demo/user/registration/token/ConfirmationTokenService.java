@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.registration.token;
+package com.BussinesCardApp.demo.user.registration.token;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

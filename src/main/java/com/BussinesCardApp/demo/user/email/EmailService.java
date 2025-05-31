@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.email;
+package com.BussinesCardApp.demo.user.email;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

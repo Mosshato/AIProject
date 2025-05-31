@@ -1,12 +1,12 @@
-package com.BussinesCardApp.demo.USER.registration;
+package com.BussinesCardApp.demo.user.registration;
 
 
-import com.BussinesCardApp.demo.USER.email.EmailService;
-import com.BussinesCardApp.demo.USER.registration.token.ConfirmationToken;
-import com.BussinesCardApp.demo.USER.registration.token.ConfirmationTokenService;
-import com.BussinesCardApp.demo.USER.appuser.AppUser;
-import com.BussinesCardApp.demo.USER.appuser.AppUserRole;
-import com.BussinesCardApp.demo.USER.appuser.AppUserService;
+import com.BussinesCardApp.demo.user.email.EmailService;
+import com.BussinesCardApp.demo.user.registration.token.ConfirmationToken;
+import com.BussinesCardApp.demo.user.registration.token.ConfirmationTokenService;
+import com.BussinesCardApp.demo.user.appuser.AppUser;
+import com.BussinesCardApp.demo.user.appuser.AppUserRole;
+import com.BussinesCardApp.demo.user.appuser.AppUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

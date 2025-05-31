@@ -1,6 +1,6 @@
-package com.BussinesCardApp.demo.USER.registration.token;
+package com.BussinesCardApp.demo.user.registration.token;
 
-import com.BussinesCardApp.demo.USER.appuser.AppUser;
+import com.BussinesCardApp.demo.user.appuser.AppUser;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

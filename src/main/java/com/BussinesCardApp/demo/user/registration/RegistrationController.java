@@ -1,4 +1,4 @@
-package com.BussinesCardApp.demo.USER.registration;
+package com.BussinesCardApp.demo.user.registration;
 
 import org.springframework.web.bind.annotation.*;
 

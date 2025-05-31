@@ -1,7 +1,7 @@
-package com.BussinesCardApp.demo.USER.appuser;
+package com.BussinesCardApp.demo.user.appuser;
 
-import com.BussinesCardApp.demo.USER.registration.token.ConfirmationToken;
-import com.BussinesCardApp.demo.USER.registration.token.ConfirmationTokenService;
+import com.BussinesCardApp.demo.user.registration.token.ConfirmationToken;
+import com.BussinesCardApp.demo.user.registration.token.ConfirmationTokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

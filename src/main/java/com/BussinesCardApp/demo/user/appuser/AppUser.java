@@ -1,7 +1,6 @@
-package com.BussinesCardApp.demo.USER.appuser;
+package com.BussinesCardApp.demo.user.appuser;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -24,7 +23,6 @@ public class AppUser implements UserDetails {
     private String id;
     private String firstName;
     private String lastName;
-    @Getter
     private String email;
     private String password;
     private AppUserRole appUserRole;

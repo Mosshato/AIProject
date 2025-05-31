@@ -1,6 +1,4 @@
-package com.BussinesCardApp.demo.USER.registration;
-
-import java.util.Objects;
+package com.BussinesCardApp.demo.user.registration;
 
 public class RegistrationRequest {
     private String firstName;
