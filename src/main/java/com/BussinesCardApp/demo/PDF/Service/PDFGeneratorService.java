@@ -17,9 +17,12 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
- 
+import java.nio.file.StandardOpenOption;
+import java.time.Instant;
+
 @Service
 public class PDFGeneratorService {
 
@@ -51,49 +54,7 @@ public class PDFGeneratorService {
         return ImageDataFactory.create(baos.toByteArray());
     }
 
-    /**
-     * Această metodă:
-     *  1) generează PDF-ul în memorie (ca byte[]),
-     *  2) îl trimite clientului prin HttpServletResponse,
-     *  3) salvează același PDF pe disc, la {storageRoot}/{userId}/{timestamp}.pdf,
-     *  4) inserează în MongoDB metadatele exportului.
-     */
-/*
-    public void generateAndSavePdf(HttpServletResponse response, AppUser user) throws Exception {
-        // --------------- 1) Generează PDF-ul în memorie ---------------
-        byte[] pdfBytes = generatePdfBytes();
 
-        // --------------- 2) Trimite PDF-ul către client ---------------
-        response.setContentType("application/pdf");
-        response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=\"business-cards-" + user.getId() + ".pdf\""
-        );
-        response.getOutputStream().write(pdfBytes);
-        response.getOutputStream().flush();
-
-        // --------------- 3) Scrie PDF-ul pe disc ---------------
-        // Creăm directorul root + subfolderul userId
-        Path userDir = storageRoot.resolve(user.getId());
-        Files.createDirectories(userDir);
-
-        String fileName = Instant.now().toEpochMilli() + ".pdf";
-        Path filePath = userDir.resolve(fileName);
-
-        try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-            fos.write(pdfBytes);
-        }
-
-        // --------------- 4) Salvează metadatele în MongoDB ---------------
-        PDFExport exportEvent = new PDFExport(
-                user.getId(),
-                user.getEmail(),
-                Instant.now(),
-                filePath.toString()
-        );
-        pdfRepo.save(exportEvent);
-    }
-*/
 
     /**
      * Generează PDF-ul ca un array de byte[], fără a-l trimite direct în response.
@@ -157,9 +118,12 @@ public class PDFGeneratorService {
      * Metoda veche, pe care o poți păstra doar dacă mai ai vreo rută care apelează exportCardsAsPdf().
      *
      */
-    public void exportCardsAsPdf(BusinessCardDTO card,AppUser user,HttpServletResponse response) throws Exception {
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=\"business-cards.pdf\"");
+    public void exportCardsAsPdf(BusinessCardDTO card,
+                                 AppUser user,
+                                 HttpServletResponse response) throws Exception {
+
+        /* 1️⃣  Generează paginile de vizită în memorie (BAOS) */
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         BufferedImage faceCard = cardMaker.createFaceImage(card);
         BufferedImage backCard = cardMaker.createBackImage();
@@ -167,14 +131,39 @@ public class PDFGeneratorService {
         ImageData faceData = bufferedImageToImageData(faceCard);
         ImageData backData = bufferedImageToImageData(backCard);
 
-        try (PdfWriter writer = new PdfWriter(response.getOutputStream());
+        try (PdfWriter writer  = new PdfWriter(baos);
              PdfDocument pdf   = new PdfDocument(writer);
-             Document doc      = new Document(pdf, PageSize.A4)) {
+             Document doc     = new Document(pdf, PageSize.A4)) {
 
             tileImageOnPage(doc, faceData);
             doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
             tileImageOnPage(doc, backData);
         }
-    }
 
+        byte[] pdfBytes = baos.toByteArray();
+
+        /* 2️⃣  Trimite PDF-ul către client */
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=\"business-cards.pdf\"");
+        response.getOutputStream().write(pdfBytes);
+        response.flushBuffer();
+
+        /* 3️⃣  Salvează o copie pe disc */
+        String fileName = "card_" +
+                (user != null ? user.getId() : "anon") +
+                "_" + System.currentTimeMillis() + ".pdf";
+        Path filePath = storageRoot.resolve(fileName);
+        Files.write(filePath, pdfBytes, StandardOpenOption.CREATE_NEW);
+
+        /* 4️⃣  Înregistrează evenimentul în MongoDB */
+
+        PDFExport exportEvent = new PDFExport(
+                user != null ? user.getId()    : null,
+                user != null ? user.getEmail() : null,
+                Instant.now(),
+                filePath.toString()
+        );
+        exportRepository.save(exportEvent);
+    }
 }

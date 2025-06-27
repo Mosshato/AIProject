@@ -102,4 +102,7 @@ public class AppUser implements UserDetails {
         return appUserRole;
     }
 
+    public Object getFirstName() {
+        return firstName;
+    }
 }
