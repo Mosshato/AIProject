@@ -12,7 +12,7 @@ import java.awt.image.Kernel;
 @Service
 public class BusinessCardMaker {
 
-    BufferedImage createFaceImage() throws Exception {
+    BufferedImage createFaceImage(BusinessCardDTO cardDetails) throws Exception {
         // 1) load your 96 dpi bitmaps
         BufferedImage bg   = ImageIO.read(new ClassPathResource("Fundal.jpg").getInputStream());
         BufferedImage logo = ImageIO.read(new ClassPathResource("SiglaUVTFata.png").getInputStream());
@@ -55,8 +55,8 @@ public class BusinessCardMaker {
         g.fillRect(tbX, tbY, tbW, tbH);
 
         int rightMargin = 25;
-        String text1 = "Assist. Prof. Ph.D. ";
-        String text2 = "Sebastian-Aurelian ȘTEFĂNIGĂ";
+        String text1 = cardDetails.getScientificTitle() + " ";
+        String text2 = cardDetails.getFirstName() + " " + cardDetails.getLastName();
         Font   f1    = new Font("Open Sans", Font.PLAIN, 10);
         Font   f2    = new Font("Open Sans", Font.BOLD, 12);
         FontMetrics fm1 = g.getFontMetrics(f1);
@@ -72,7 +72,7 @@ public class BusinessCardMaker {
         g.setFont(f2);
         g.drawString(text2, xLine1 + fm1.stringWidth(text1), baseline1);
 
-        String text3 = "Vice Dean";
+        String text3 = cardDetails.getAcademicPosition();
         Font   f3    = new Font("Open Sans", Font.BOLD, 9);
         FontMetrics fm3 = g.getFontMetrics(f3);
         int xLine2    = tbX + tbW - rightMargin - fm3.stringWidth(text3);
@@ -107,8 +107,14 @@ public class BusinessCardMaker {
         int lineH      = Math.max(fmLabel.getHeight(), fmValue.getHeight()) + 2;
 
         String[][] groups = {
-                { "Office: +40 256-592.261", "Mobile: +40 762-696.901" },
-                { "E-mail: sebastian.stefaniga@e-uvt.ro", "Web:   www.info.uvt.ro" }
+                {
+                        "Office: " + cardDetails.getOfficePhone(),
+                        "Mobile: " + cardDetails.getMobilePhone()
+                },
+                {
+                        "E-mail: " + cardDetails.getEmail(),
+                        "Web: " + cardDetails.getWebsite()
+                }
         };
         for (String[] grp : groups) {
             int groupH      = lineH * grp.length - 2;
@@ -142,6 +148,7 @@ public class BusinessCardMaker {
         ConvolveOp op = new ConvolveOp(new Kernel(3,3,kernel), ConvolveOp.EDGE_NO_OP, null);
         return op.filter(smooth, null);
     }
+
     BufferedImage createBackImage() throws Exception {
         BufferedImage bg   = ImageIO.read(new ClassPathResource("Fundal.jpg").getInputStream());
         BufferedImage logo = ImageIO.read(new ClassPathResource("SiglaUVTSpate.png").getInputStream());

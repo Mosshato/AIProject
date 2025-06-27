@@ -1,6 +1,9 @@
-mangage db and BE, when a user generates a pdf to be associated with it
-get endpoint for user s generated pdf's
-map the post login endpoint
-get endpoint for user s account data
-add an ai api for generating custom backgrounds
-email test with regex
+
+1.mangage db and BE, when a user generates a pdf to be associated with it
+
+2.get endpoint for user s generated pdf's
+3.get endpoint for user s account data
+
+
+4.add an ai api for generating custom backgrounds
+5.email test with regex

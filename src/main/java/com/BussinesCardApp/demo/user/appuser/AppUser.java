@@ -1,5 +1,6 @@
 package com.BussinesCardApp.demo.user.appuser;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -82,4 +83,23 @@ public class AppUser implements UserDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;          // false dacă e blocat
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;          // true doar după confirmarea e-mailului
+    }
+
+    public AppUserRole getAppUserRole() {
+        return appUserRole;
+    }
+
 }
